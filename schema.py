@@ -108,20 +108,20 @@ class Query(graphene.ObjectType):
 
 ## MUTATIONS ##
 
-# class CategoryMutation(graphene.Mutation):
+class CategoryMutation(graphene.Mutation):
     
-#     vendor = graphene.Field(VendorType)
+    vendor = graphene.Field(VendorType)
 
-#     class Arguments:    
+    class Arguments:    
     
-#         pass
+        pass
 
 
-# class Mutation(graphene.ObjectType):
+class Mutation(graphene.ObjectType):
 
-#     add_vendors = CategoryMutation.Field()
-#     def resolve_add_vendors(root, info):
-#         return Vendor.objects.all()
+    add_vendors = CategoryMutation.Field()
+    def resolve_add_vendors(root, info):
+        return Vendor.objects.all()
 
 
-schema = graphene.Schema(query=Query)#, mutation=Mutation)
+schema = graphene.Schema(query=Query, mutation=Mutation)
