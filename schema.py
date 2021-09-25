@@ -153,28 +153,35 @@ class Query(graphene.ObjectType):
     def resolve_driver_with_id(root, info, id):
         return Driver.objects.get(pk=id)
 
-    truck_by_driver = graphene.List(TruckType, id=graphene.Int())
-    def resolve_truck_by_driver(root, info, id):
-        return Truck.objects.filter(driver = id)
+    truck_by_driver_FULL_NAME = graphene.List(TruckType, fname = graphene.String())
+    def resolve_truck_by_driver_FULL_NAME(root, info, fname):
+        d = Driver.objects.get(full_name = fname)
+        return Truck.objects.filter(driver = d.id)
 
 
 
 ## MUTATIONS ##
 
-# class CategoryMutation(graphene.Mutation):
+class TruckMutation(graphene.Mutation):
     
-#     vendor = graphene.Field(VendorType)
+    class Arguments:    
+        make_name = graphene.String(required=True)
+        unit_name = graphene.String(required=True)
+        plate_num = graphene.String(required=True)
 
-#     class Arguments:    
-    
-#         pass
+    truck = graphene.Field(TruckType)
+
+    @classmethod
+    def mutate(cls, root, info, make_name, unit_name, plate_num):
+      truck = Truck(make = make_name, unit = unit_name, plate = plate_num)
+      truck.save()
+      return TruckMutation( truck = truck )
 
 
-# class Mutation(graphene.ObjectType):
 
-#     add_vendors = CategoryMutation.Field()
-#     def resolve_add_vendors(root, info):
-#         return Vendor.objects.all()
+class Mutation(graphene.ObjectType):
+
+    update_trucks = TruckMutation.Field()
 
 
-schema = graphene.Schema(query=Query)#, mutation=Mutation)
+schema = graphene.Schema(query=Query, mutation=Mutation)

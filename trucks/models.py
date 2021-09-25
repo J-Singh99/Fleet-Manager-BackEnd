@@ -8,17 +8,17 @@ class Truck(models.Model):
 
     driver = models.ManyToManyField(Driver)
 
-    unit =  models.IntegerField() 
-    make = models.CharField(blank=True, max_length=100)
-    plate = models.CharField(blank=True, max_length=100)
-    type = models.CharField(blank=True, max_length=100)
-    year = models.IntegerField()
-    driver_1 = models.CharField(blank=True, max_length=100)
-    driver_2 = models.CharField(blank=True, max_length=100)
-    country = models.CharField(blank=True, max_length=100)
-    state = models.CharField(blank=True, max_length=100)
-    VIN_number = models.CharField(blank=True, max_length=100)
-    terminal = models.CharField(blank=True, max_length=100)
+    unit =  models.IntegerField(default=None) 
+    make = models.CharField(blank=True, max_length=100, default=None)
+    plate = models.CharField(blank=True, max_length=100, default=None)
+    type = models.CharField(blank=True, max_length=100, default=None)
+    year = models.IntegerField(blank=True, default=None)
+    driver_1 = models.CharField(blank=True, max_length=100, default=None)
+    driver_2 = models.CharField(blank=True, max_length=100, default=None)
+    country = models.CharField(blank=True, max_length=100, default=None)
+    state = models.CharField(blank=True, max_length=100, default=None)
+    VIN_number = models.CharField(blank=True, max_length=100, default=None)
+    terminal = models.CharField(blank=True, max_length=100, default=None)
     
 
     class CityTruckType(models.TextChoices):
@@ -27,10 +27,10 @@ class Truck(models.Model):
         HIGHWAY_TRUCK = 'HGHWY'
     city_truck = models.CharField(max_length=5, choices=CityTruckType.choices, default=None, blank=True)
     
-    tour = models.IntegerField()
+    tour = models.IntegerField(blank=True, default=None)
     still_working = models.BooleanField(default=False)
     
-    leave_date = models.DateField()
+    leave_date = models.DateField(blank=True)
     
     class TruckOwnershipType(models.TextChoices):
         COMPANY_TRUCK = 'CMPNY_TRK'
@@ -38,16 +38,16 @@ class Truck(models.Model):
         PAID_BY_PERCENTAGE = 'PD_BY_PRCNTG'
     truck_ownership = models.CharField(max_length=15, choices=TruckOwnershipType.choices, default=None, blank=True)
     
-    value = models.FloatField()
-    weight_pounds = models.FloatField()
-    IFTA_group = models.IntegerField()
+    value = models.FloatField(blank=True, default=None)
+    weight_pounds = models.FloatField(blank=True, default=None)
+    IFTA_group = models.IntegerField(blank=True, default=None)
     
     # Owner Operator Details
-    account = models.CharField(blank=True, max_length=100)
-    percentage = models.FloatField()
-    rate_per_mile_LOAD = models.FloatField()
-    rate_per_mile_EMPTY = models.FloatField()
-    rate_per_hour = models.FloatField()
+    account = models.CharField(blank=True, max_length=100, default=None)
+    percentage = models.FloatField(blank=True, default=None)
+    rate_per_mile_LOAD = models.FloatField(blank=True, default=None)
+    rate_per_mile_EMPTY = models.FloatField(blank=True, default=None)
+    rate_per_hour = models.FloatField(blank=True, default=None)
 
 class TruckSafetyDetail(models.Model):
     truck = models.ForeignKey(Truck, on_delete=models.CASCADE)
