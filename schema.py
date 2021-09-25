@@ -37,7 +37,7 @@ class VendorType(DjangoObjectType):
 
 class TruckType(DjangoObjectType):
     class Meta:
-        model = Vendor
+        model = Truck
         fields = (
             "driver",
             "unit",
@@ -67,7 +67,7 @@ class TruckType(DjangoObjectType):
 
 class TruckSafetyDetailType(DjangoObjectType):
     class Meta:
-        model = Vendor
+        model = TruckSafetyDetail
         fields = (
             "truck",
             "safety_details",
@@ -77,7 +77,7 @@ class TruckSafetyDetailType(DjangoObjectType):
 
 class TruckMonthlyDeductionType(DjangoObjectType):
     class Meta:
-        model = Vendor
+        model = TruckMonthlyDeduction
         fields = (
             "truck",
             "monthly_deductions",
@@ -101,6 +101,14 @@ class Query(graphene.ObjectType):
     def resolve_vendor_with_id(root, info, id):
         return Vendor.objects.get(pk=id)
 
+    all_trucks = graphene.List(TruckType) #DjangoListField
+    def resolve_all_trucks(root, info):
+        return Truck.objects.all()
+
+    truck_with_id = graphene.Field(TruckType, id=graphene.Int())
+    def resolve_truck_with_id(root, info, id):
+        return Truck.objects.get(pk=id)
+
     # resolve_whateevr:
     #   whtevr.objects.filter(foreginKey = id)
 
@@ -108,20 +116,20 @@ class Query(graphene.ObjectType):
 
 ## MUTATIONS ##
 
-class CategoryMutation(graphene.Mutation):
+# class CategoryMutation(graphene.Mutation):
     
-    vendor = graphene.Field(VendorType)
+#     vendor = graphene.Field(VendorType)
 
-    class Arguments:    
+#     class Arguments:    
     
-        pass
+#         pass
 
 
-class Mutation(graphene.ObjectType):
+# class Mutation(graphene.ObjectType):
 
-    add_vendors = CategoryMutation.Field()
-    def resolve_add_vendors(root, info):
-        return Vendor.objects.all()
+#     add_vendors = CategoryMutation.Field()
+#     def resolve_add_vendors(root, info):
+#         return Vendor.objects.all()
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = graphene.Schema(query=Query)#, mutation=Mutation)
